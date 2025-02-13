@@ -1,3 +1,5 @@
+[![Search-Cep tests](https://github.com/victorserpa/buscaCEP/actions/workflows/cy.yml/badge.svg)](https://github.com/victorserpa/buscaCEP/actions/workflows/cy.yml)
+
 # BuscaCEP
 
 <img src="public/BuscaCep.jpeg" alt="Formulário Busca Cep">
@@ -19,7 +21,7 @@ Para instalar o **BuscaCEP**, siga estas etapas:
 ### 🔹 Linux e macOS:
 
 ```sh
-git clone https://github.com/seu-usuario/buscacep.git
+git clone https://github.com/victorserpa/buscaCEP.git
 cd buscacep
 pnpm install
 pnpm dev
@@ -29,7 +31,7 @@ pnpm dev
 ### 🪟 Windows
 
 ```sh
-git clone https://github.com/seu-usuario/buscacep.git
+git clone https://github.com/victorserpa/buscaCEP.git
 cd buscacep
 pnpm install
 pnpm dev
