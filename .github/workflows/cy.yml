@@ -1,0 +1,42 @@
+name: Search-Cep tests
+on: push
+
+jobs:
+  cypress-e2e:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Instalar dependências
+        run: pnpm install
+
+      - name: Rodar testes E2E
+        run: pnpm cypress run --browser chrome
+
+  cypress-component:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Instalar dependências
+        run: pnpm install
+
+      - name: Instalar navegadores para Cypress
+        run: npx cypress install --browser chrome
+
+      - name: Rodar testes de componentes
+        run: pnpm cypress run --component --browser chrome
