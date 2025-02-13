@@ -93,6 +93,7 @@ export default function FormSearchCep() {
             label="Endereço"
             placeholder="Informe o seu Endereço"
             register={register("street")}
+            onChange={(e) => setValue("street", e.target.value)}
             disabled={isLoading}
             error={errors.street?.message}
           />
@@ -115,6 +116,7 @@ export default function FormSearchCep() {
             label="Bairro"
             placeholder="Informe o seu bairro"
             register={register("neighborhood")}
+            onChange={(e) => setValue("neighborhood", e.target.value)}
             disabled={isLoading}
             error={errors.neighborhood?.message}
           />
@@ -125,6 +127,7 @@ export default function FormSearchCep() {
             label="Cidade"
             placeholder="Informe a sua cidade"
             register={register("city")}
+            onChange={(e) => setValue("city", e.target.value)}
             disabled={isLoading}
             error={errors.city?.message}
           />
@@ -135,6 +138,7 @@ export default function FormSearchCep() {
             label="Estado"
             placeholder="Informe o seu estado"
             register={register("state")}
+            onChange={(e) => setValue("state", e.target.value)}
             disabled={isLoading}
             error={errors.state?.message}
           />
