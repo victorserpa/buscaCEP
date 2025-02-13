@@ -1,27 +1,60 @@
 name: Search-Cep tests
+
 on: push
 
 jobs:
   cypress-e2e:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout código
         uses: actions/checkout@v4
+
+      - name: Definir variável de ambiente manualmente
+        run: |
+          echo "NEXT_PUBLIC_API_PUBLIC_URL=http://localhost:3000/" > .env.local
+          echo "NEXT_PUBLIC_VIA_CEP_URL=https://viacep.com.br/ws" >> .env.local
+          cat .env.local
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+
+      - name: Instalar pnpm corretamente
+        uses: pnpm/action-setup@v3
+        with:
+          version: latest
+
+      - name: Instalar wait-on globalmente
+        run: npm install -g wait-on
+
+      - name: Configurar cache do pnpm
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
       - name: Instalar dependências
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
+
+      - name: Instalar Cypress Binary
+        run: pnpm cypress install
+
+      - name: Build aplicação
+        run: pnpm build
+
+      - name: Iniciar servidor da aplicação
+        run: |
+          pnpm start &
+          npx wait-on http://localhost:3000
 
       - name: Rodar testes E2E
         run: pnpm cypress run --browser chrome
 
   cypress-component:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout código
         uses: actions/checkout@v4
@@ -30,13 +63,31 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+
+      - name: Instalar pnpm corretamente
+        uses: pnpm/action-setup@v3
+        with:
+          version: latest
+
+      - name: Configurar cache do pnpm
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Criar .env.local para testes de componente
+        run: |
+          echo "NEXT_PUBLIC_API_PUBLIC_URL=http://localhost:3000/" > .env.local
+          echo "NEXT_PUBLIC_VIA_CEP_URL=https://viacep.com.br/ws" >> .env.local
+          cat .env.local
 
       - name: Instalar dependências
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      - name: Instalar navegadores para Cypress
-        run: npx cypress install --browser chrome
+      - name: Instalar Cypress Binary
+        run: pnpm cypress install
 
       - name: Rodar testes de componentes
-        run: pnpm cypress run --component --browser chrome
+        run: pnpm cypress run --component
